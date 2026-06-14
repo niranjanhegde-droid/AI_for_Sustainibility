@@ -332,7 +332,8 @@ If implemented in educational institutions:
 **Niranjan Hegde**
 
 MCA Student
-M S Ramaiah University of Applied Sciences Banglore
+
+@M S Ramaiah University of Applied Sciences Banglore
 
 ---
 
