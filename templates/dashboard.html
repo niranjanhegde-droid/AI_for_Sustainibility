@@ -1,0 +1,416 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4 py-3 dash-wrap">
+
+    <h1 class="mb-3 text-success fw-bold dash-title">
+        Sustainability Dashboard
+    </h1>
+
+    <div class="row g-3">
+
+        <!-- LEFT COLUMN: Stats + Score + Impact -->
+        <div class="col-lg-7">
+
+            <!-- Statistics Cards -->
+            <div class="row g-3">
+
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card compact-card">
+                        <h6>Total Issues</h6>
+                        <h2>{{ total }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card water-card compact-card">
+                        <h6>Water Issues</h6>
+                        <h2>{{ water }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card energy-card compact-card">
+                        <h6>Energy Issues</h6>
+                        <h2>{{ energy }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card waste-card compact-card">
+                        <h6>Waste Issues</h6>
+                        <h2>{{ waste }}</h2>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Green Score -->
+            <div class="card shadow mt-3 p-3 p-md-4">
+
+                <h5 class="mb-3">
+                    🌱 Green Campus Score
+                </h5>
+
+                <div class="progress" style="height:30px;">
+
+                    <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        style="width: {{ score }}%;">
+
+                        {{ score }}%
+
+                    </div>
+
+                </div>
+
+                <p class="mt-2 mb-0 small">
+
+                    {% if score > 90 %}
+                        Excellent Sustainability Performance
+                    {% elif score > 75 %}
+                        Good Sustainability Performance
+                    {% else %}
+                        Sustainability Improvements Required
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+            <!-- Impact Metrics -->
+            <div class="row mt-3 g-3">
+
+                <div class="col-md-4">
+                    <div class="dashboard-card compact-card">
+                        <h6>💧 Water Saved</h6>
+                        <h3 class="mb-1">{{ water * 120 }} L</h3>
+                        <small>Conservation impact</small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="dashboard-card compact-card">
+                        <h6>⚡ Energy Saved</h6>
+                        <h3 class="mb-1">{{ energy * 15 }} kWh</h3>
+                        <small>Energy savings</small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="dashboard-card compact-card">
+                        <h6>♻ Waste Recycled</h6>
+                        <h3 class="mb-1">{{ waste * 8 }} Kg</h3>
+                        <small>Waste recovery</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Pie Chart -->
+        <div class="col-lg-5">
+
+            <div class="card shadow p-3 p-md-4 h-100 d-flex flex-column">
+
+                <h5 class="mb-2">
+                    Issue Distribution
+                </h5>
+
+                <div class="chart-container chart-container-compact flex-grow-1">
+                    <canvas id="issueChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Recent Issues + AI Recommendation -->
+    <div class="row mt-3 g-3">
+
+        <div class="col-lg-7">
+
+            <div class="card shadow p-3 p-md-4 h-100">
+
+                <h5 class="mb-2">
+                    Recent Reported Issues
+                </h5>
+
+                <div class="table-scroll">
+
+                    <table class="table table-hover table-sm align-middle mb-0">
+
+                        <thead class="table-success">
+
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for complaint in complaints %}
+
+                            <tr>
+
+                                <td>{{ complaint.title }}</td>
+
+                                <td>{{ complaint.category }}</td>
+
+                                <td>
+
+                                    {% if complaint.priority == "High" %}
+
+                                    <span class="badge bg-danger">
+                                        High
+                                    </span>
+
+                                    {% elif complaint.priority == "Medium" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Medium
+                                    </span>
+
+                                    {% else %}
+
+                                    <span class="badge bg-success">
+                                        Low
+                                    </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    {% if complaint.status == "Open" %}
+
+                                    <span class="badge bg-danger">
+                                        Open
+                                    </span>
+
+                                    {% elif complaint.status == "In Progress" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        In Progress
+                                    </span>
+
+                                    {% else %}
+
+                                    <span class="badge bg-success">
+                                        Resolved
+                                    </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- AI Recommendation -->
+        <div class="col-lg-5">
+
+            <div class="card shadow p-3 p-md-4 h-100">
+
+                <h5 class="mb-2">
+                    🤖 AI Sustainability Recommendation
+                </h5>
+
+                {% if water > energy and water > waste %}
+
+                <div class="alert alert-primary mt-2 mb-0 small-alert">
+
+                    <h6 class="mb-1">Water Conservation Plan</h6>
+
+                    <ul class="mb-0 ps-3">
+                        <li>Repair leaks immediately</li>
+                        <li>Install smart sensor taps</li>
+                        <li>Conduct water audits</li>
+                        <li>Promote rainwater harvesting</li>
+                    </ul>
+
+                </div>
+
+                {% elif energy > water and energy > waste %}
+
+                <div class="alert alert-warning mt-2 mb-0 small-alert">
+
+                    <h6 class="mb-1">Energy Conservation Plan</h6>
+
+                    <ul class="mb-0 ps-3">
+                        <li>Replace conventional bulbs with LEDs</li>
+                        <li>Install occupancy sensors</li>
+                        <li>Turn off unused equipment</li>
+                        <li>Conduct energy audits</li>
+                    </ul>
+
+                </div>
+
+                {% elif waste > water and waste > energy %}
+
+                <div class="alert alert-success mt-2 mb-0 small-alert">
+
+                    <h6 class="mb-1">Waste Management Plan</h6>
+
+                    <ul class="mb-0 ps-3">
+                        <li>Increase recycling bins</li>
+                        <li>Promote waste segregation</li>
+                        <li>Reduce plastic usage</li>
+                        <li>Conduct awareness programs</li>
+                    </ul>
+
+                </div>
+
+                {% else %}
+
+                <div class="alert alert-info mt-2 mb-0 small-alert">
+
+                    Sustainability metrics appear balanced.
+                    Continue monitoring campus resources.
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.dash-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dash-title {
+    font-size: 1.8rem;
+}
+
+.compact-card {
+    padding: 18px;
+}
+
+.compact-card h6 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+    margin-bottom: 6px;
+}
+
+.compact-card h2 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.compact-card h3 {
+    font-size: 1.4rem;
+}
+
+.chart-container-compact {
+    width: 100% !important;
+    height: 260px !important;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.table-scroll {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.small-alert {
+    font-size: 0.85rem;
+}
+
+.small-alert h6 {
+    font-size: 0.95rem;
+}
+
+@media (max-width: 991px) {
+    .chart-container-compact {
+        height: 220px !important;
+    }
+    .table-scroll {
+        max-height: 220px;
+    }
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx =
+document.getElementById('issueChart');
+
+new Chart(ctx, {
+
+type: 'pie',
+
+data: {
+
+labels: [
+'Water',
+'Energy',
+'Waste'
+],
+
+datasets: [{
+
+data: [
+{{ water }},
+{{ energy }},
+{{ waste }}
+],
+
+backgroundColor: [
+'#0dcaf0',
+'#ffc107',
+'#198754'
+]
+
+}]
+
+},
+
+options: {
+maintainAspectRatio: false
+}
+
+});
+
+</script>
+
+{% endblock %}

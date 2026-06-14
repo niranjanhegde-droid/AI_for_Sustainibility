@@ -1,0 +1,162 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+<div class="container text-center">
+
+<h1 class="display-3 fw-bold">
+GreenCampus AI
+</h1>
+
+<p class="lead fs-4">
+AI-Powered Sustainability Monitoring &
+Decision Support System
+</p>
+
+<div class="mt-4">
+
+    <a href="{{ url_for('report') }}"
+       class="btn btn-success btn-lg px-4">
+
+        <i class="fas fa-plus-circle"></i>
+        Report Issue
+
+    </a>
+
+    <a href="{{ url_for('chatbot') }}"
+       class="btn btn-outline-light btn-lg px-4">
+
+        <i class="fas fa-robot"></i>
+        AI Assistant
+
+    </a>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="container py-5">
+
+<div class="text-center mb-5">
+
+<h2>
+Key Sustainability Areas
+</h2>
+
+<p>
+Monitor and improve campus sustainability
+through Artificial Intelligence.
+</p>
+
+</div>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+
+<div class="feature-card">
+
+<i class="fas fa-tint fa-3x"></i>
+
+<h4>Water</h4>
+
+<p>
+Detect leaks, monitor usage,
+and conserve water resources.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="feature-card">
+
+<i class="fas fa-bolt fa-3x"></i>
+
+<h4>Energy</h4>
+
+<p>
+Reduce electricity wastage and
+improve efficiency.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="feature-card">
+
+<i class="fas fa-recycle fa-3x"></i>
+
+<h4>Waste</h4>
+
+<p>
+Promote recycling and
+sustainable waste management.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="feature-card">
+
+<i class="fas fa-brain fa-3x"></i>
+
+<h4>AI Insights</h4>
+
+<p>
+Receive intelligent recommendations
+for sustainability improvement.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="container pb-5">
+
+<div class="score-card">
+
+<h2>
+Sustainability Goals
+</h2>
+
+<p>
+
+SDG 6 • SDG 7 • SDG 11 • SDG 12
+
+</p>
+
+<p>
+
+Supporting Clean Water,
+Clean Energy,
+Sustainable Communities,
+and Responsible Consumption.
+
+</p>
+
+</div>
+
+</section>
+
+{% endblock %}
