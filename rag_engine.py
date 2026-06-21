@@ -1,54 +1,42 @@
 import os
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-
 class SustainabilityRAG:
 
     def __init__(self):
-
-        self.documents = []
-
+        self.documents = {}
         self.load_documents()
 
-        self.vectorizer = TfidfVectorizer()
-
-        self.document_vectors = self.vectorizer.fit_transform(
-            self.documents
-        )
-
     def load_documents(self):
-
         folder = "knowledge"
 
         for file in os.listdir(folder):
-
             if file.endswith(".txt"):
-
                 with open(
                     os.path.join(folder, file),
                     "r",
                     encoding="utf-8"
                 ) as f:
-
-                    self.documents.append(
-                        f.read()
-                    )
+                    self.documents[file] = f.read()
 
     def retrieve(self, question):
 
-        query_vector = self.vectorizer.transform(
-            [question]
-        )
+        question = question.lower()
 
-        similarities = cosine_similarity(
-            query_vector,
-            self.document_vectors
-        )
+        if "water" in question or "leak" in question:
+            return self.documents.get("water.txt", "")
 
-        best_match_index = similarities.argmax()
+        elif (
+            "energy" in question
+            or "electricity" in question
+            or "power" in question
+        ):
+            return self.documents.get("energy.txt", "")
 
-        return self.documents[
-            best_match_index
-        ]   
+        elif (
+            "waste" in question
+            or "garbage" in question
+            or "recycle" in question
+        ):
+            return self.documents.get("waste.txt", "")
+
+        return self.documents.get("sdg.txt", "")
