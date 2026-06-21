@@ -8,7 +8,9 @@
 ![SDGs](https://img.shields.io/badge/UN-SDGs-success)
 
 ---
+## view live demo [https://ai-for-sustainibility.onrender.com]
 
+---
 ## 🌍 Project Overview
 
 GreenCampus AI is an AI-powered sustainability monitoring and decision-support platform designed to help educational institutions identify, monitor, and address sustainability-related issues on campus.
