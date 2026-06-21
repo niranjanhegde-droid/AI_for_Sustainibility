@@ -2,10 +2,13 @@ __pycache__/
 *.pyc
 
 instance/
+*.db
 
 .env
 
 venv/
 env/
+
+.vscode/
 
 .DS_Store
